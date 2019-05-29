@@ -1,22 +1,26 @@
 import numpy as np
-from sklearn import preprocessing, cross_validation, neighbors
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 import pandas as pd
 
-df = pd.read_csv('breast-cancer-wisconsin.data.txt')
-df.replace('?',-99999, inplace=True)
-#df.drop(['id'], 1, inplace=True)
+df = pd.read_csv("data.csv")
+#df.replace('true', 1, inplace=True)
+#df.replace('false', 0, inplace=True)
+#df.drop([], 1, inplace=True)
 
-X = np.array(df.drop(['class'], 1))
-y = np.array(df['class'])
+#print(df)
 
-X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.2)
+X = np.array(df.drop(['CLASS'], 1))
+y = np.array(df['CLASS'])
 
-clf = neighbors.KNeighborsClassifier()
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+clf = RandomForestClassifier(n_estimators=20)
 clf.fit(X_train, y_train)
 accuracy = clf.score(X_test, y_test)
 print(accuracy)
 
-example_measures = np.array([4,2,1,1,1,2,3,2,1])
+example_measures = np.array([10,7,0,6,21,85,9,250])
 example_measures = example_measures.reshape(1, -1)
 prediction = clf.predict(example_measures)
 print(prediction)
